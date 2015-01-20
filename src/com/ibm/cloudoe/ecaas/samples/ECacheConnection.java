@@ -16,8 +16,8 @@ import com.ibm.websphere.objectgrid.Session;
 /**
  * Define the elastic caching Operation, mainly in order to program operation.
  * 
- * You can refer to the Elastic Caching Java Native API Specification
- * http://pic.dhe.ibm.com/infocenter/wdpxc/v2r5/index.jsp?topic=%2Fcom.ibm.websphere.datapower.xc.doc%2Fcxslibertyfeats.html
+ * You can refer to the Elastic Caching Java Native API Specifition
+ * http://pic.dhe.ibm.com/infocenter/wdpxc/v2r5/index.jsp?topc=%2Fcom.ibm.websphere.datapower.xc.doc%2Fcxslibertyfeats.html
  */
 public class ECacheConnection {
 
@@ -56,7 +56,8 @@ public class ECacheConnection {
 		try {
 			InitialContext ic = new InitialContext();
 			// Default service instance name is "<appname>-DataCache"
-			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getAppName() + "-DataCache");
+			//ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getAppName() + "-DataCache");
+			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getServiceName() + "-i");
 			ogSession = og.getSession();
 		} catch (NamingException e) {
 			System.out.println("Failed to find cache configuration in server.xml!");
