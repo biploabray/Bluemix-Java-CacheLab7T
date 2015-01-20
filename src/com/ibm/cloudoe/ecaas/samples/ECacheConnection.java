@@ -2,11 +2,14 @@ package com.ibm.cloudoe.ecaas.samples;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 import com.ibm.websphere.objectgrid.ObjectGrid;
 import com.ibm.websphere.objectgrid.ObjectGridException;
@@ -57,7 +60,7 @@ public class ECacheConnection {
 			InitialContext ic = new InitialContext();
 			// Default service instance name is "<appname>-DataCache"
 			//ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getAppName() + "-DataCache");
-			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getServiceName() );
+			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getDataCacheServiceName() );
 			ogSession = og.getSession();
 		} catch (NamingException e) {
 			System.out.println("Failed to find cache configuration in server.xml!");
@@ -141,6 +144,38 @@ public class ECacheConnection {
 //			System.out.println("Failed to connect to grid!");
 //			e.printStackTrace();
 //		}		
+	}
+	private static String getDataCacheServiceName(){
+		String dataCacheName = "";
+		Map<String, String> env = System.getenv();
+		String vcap = env.get("VCAP_SERVICES");
+
+		boolean foundService = false;
+		if (vcap == null) {
+			System.out.println("No VCAP_SERVICES found");
+		} else {
+			try {
+				// parse the VCAP JSON structure
+				JSONObject obj = JSONObject.parse(vcap);
+				for (Iterator<?> iter = obj.keySet().iterator(); iter.hasNext();) {
+					String key = (String) iter.next();
+					System.out.printf("Found service: %s\n", key);
+					if (key.startsWith("DataCache")) {
+						JSONArray val = (JSONArray)obj.get(key)!=null?(JSONArray)obj.get(key):null;
+						System.out.println("Found configured val: " + val);
+						if(val!=null){
+							JSONObject serviceAttr = val.get(0)!=null?(JSONObject)val.get(0):null;
+							dataCacheName = serviceAttr!=null?(serviceAttr.get("name")!=null?(String)serviceAttr.get("name"):null):null;
+							System.out.println("Found configured DaTaCache: " + dataCacheName);
+							foundService = true;
+							break;
+						}
+					}
+				}
+			} catch (Exception e) {
+			}
+		}
+		return dataCacheName;
 	}
 	
 	private static String getAppName() {
