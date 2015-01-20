@@ -57,7 +57,7 @@ public class ECacheConnection {
 			InitialContext ic = new InitialContext();
 			// Default service instance name is "<appname>-DataCache"
 			//ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getAppName() + "-DataCache");
-			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getServiceName() + "-i");
+			ObjectGrid og = (ObjectGrid) ic.lookup("wxs/" + getServiceName() );
 			ogSession = og.getSession();
 		} catch (NamingException e) {
 			System.out.println("Failed to find cache configuration in server.xml!");
