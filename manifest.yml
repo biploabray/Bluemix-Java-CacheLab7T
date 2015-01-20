@@ -1,7 +1,7 @@
 applications:
 - services:
-  - Monitoring and Analytics-7u
-  - residency2-webcache-DataCache
+  - Monitoring and Analytics-j3
+  - Data Cache-iy
   disk_quota: 1024M
   host: chowWebCache
   name: chowWebCache
