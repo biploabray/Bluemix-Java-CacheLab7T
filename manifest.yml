@@ -3,8 +3,8 @@ applications:
   - Monitoring and Analytics-7u
   - residency2-webcache-DataCache
   disk_quota: 1024M
-  host: residency2-webcache
-  name: residency2-webcache
+  host: chowWebCache
+  name: chowWebCache
   path: cacheSampleJavaNativeAPIs.war
   domain: mybluemix.net
   instances: 1
