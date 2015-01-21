@@ -60,6 +60,8 @@ public class ECaaSSample extends HttpServlet {
 			String key = request.getParameter("key");
 			String operation = request.getParameter("operation");
 			String newValue = request.getParameter("value");
+			String encrypt = request.getParameter("encrypt");
+			System.out.println("Encrypt value ?=" + encrypt);
 			Object retrievedValue;
 			String mapName = "sample.NONE.P";
 			//Process operation value and return processing results 

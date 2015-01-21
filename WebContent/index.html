@@ -31,6 +31,7 @@
 		var ajaxRequest;
 		var key = encodeURIComponent(document.getElementById('key').value);
 		var value = encodeURIComponent(document.getElementById('value').value);
+		var encrypt = encodeURIComponent(document.getElementById('encrypt').checked);
 
 		ajaxRequest = new XMLHttpRequest();
 		ajaxRequest.onreadystatechange = function() {
@@ -70,7 +71,7 @@
 			}
 		}
 
-		ajaxRequest.open("GET", "/ecaas?operation=" + operation + "&key=" + key + "&value=" + value, true);
+		ajaxRequest.open("GET", "/ecaas?operation=" + operation + "&key=" + key + "&value=" + value +"&encrypt="+encrypt, true);
 		ajaxRequest.send(null);
 	}
 
@@ -106,9 +107,13 @@
 			<div class="form-group">
 				<label for="value">Value: </label> 
 				<input id='value' class="form-control" type="text" name='value' />
+				<!--  <div>-->
+				<input id="encrypt" type="checkbox" value="1" class="chk">Encrypt
+				<!-- </div>-->
 			</div>
 		</form>
 		<div id='echo' class="messageInfo"></div>
+		
 		<div class="buttonContainer">
 			<button class="btn btn-primary" id='get'>Get</button>
 			<button class="btn btn-primary" id='put'>Put</button>
