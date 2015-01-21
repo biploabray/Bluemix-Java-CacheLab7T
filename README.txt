@@ -27,5 +27,5 @@ The Java Web Starter application contains the following contents:
     This file describes the Next Steps for getting started with this template.
 
 ----------------------------------------------------------------
-Modified locally bu GIT
+Modified locally by GIT
 ---------------------------------------------------------------
