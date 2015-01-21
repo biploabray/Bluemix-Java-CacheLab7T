@@ -25,3 +25,7 @@ The Java Web Starter application contains the following contents:
 *   instructions.md
 
     This file describes the Next Steps for getting started with this template.
+
+----------------------------------------------------------------
+Modified locally bu GIT
+---------------------------------------------------------------
