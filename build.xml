@@ -37,6 +37,7 @@
             <src path="src"/>
             <classpath refid="classpathDir"/>
         </javac>
+        <copy file="dep-jar/psclnt.jar" tofile="WebContent/WEB-INF/lib/psclnt.jar" />
     </target>
  
    <target name="build-war" depends="build-project">
