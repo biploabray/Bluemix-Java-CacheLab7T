@@ -1,13 +1,24 @@
 package com.ibm.cloudoe.ecaas.samples;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.lombardisoftware.core.xml.WPSDataValue.Base64;
+
 
 /**
  * Servlet implementation class ECaaSSample
@@ -23,6 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns ="/ecaas", loadOnStartup=1)
 public class ECaaSSample extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+    private static Cipher encryptCipher;  
+    private static Cipher decryptCipher;
+    private static String encryptionKey = "0123456789abcdef";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -62,6 +76,10 @@ public class ECaaSSample extends HttpServlet {
 			String newValue = request.getParameter("value");
 			String encrypt = request.getParameter("encrypt");
 			System.out.println("Encrypt value ?=" + encrypt);
+			if (encrypt == null || encrypt ==""){
+				System.out.println("Some Rest call did not set the encrypt value");
+				encrypt="false";
+			}
 			Object retrievedValue;
 			String mapName = "sample.NONE.P";
 			//Process operation value and return processing results 
@@ -72,7 +90,14 @@ public class ECaaSSample extends HttpServlet {
 				System.out.println("retrieved: " + retrievedValue);
 			} else if ("put".equals(operation)) {
 				// update or insert this value.
-				ECacheConnection.postData(mapName, key, newValue);
+				if (encrypt.equals("true")){
+					System.out.println("Encrypted flag set lets encrypt the value");
+					String encryptedData = encryptValues(newValue);
+					ECacheConnection.postData(mapName, key, encryptedData);
+				}else{
+					System.out.println("Encrypted flag not set do nothing");
+					ECacheConnection.postData(mapName, key, newValue);
+				}
 				response.getWriter().write("Put successfull.");
 				System.out.println("put key=" + key + " value=" + newValue);
 			} else if ("delete".equals(operation)) {
@@ -94,4 +119,32 @@ public class ECaaSSample extends HttpServlet {
 			response.setStatus(500);
 		}
 	}
-}
+	
+    private static String encryptValues(String data)  
+    	      throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
+    	
+    		SecretKeySpec secretKey = new SecretKeySpec(encryptionKey.getBytes("UTF-8"),"DES");
+	        encryptCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");  
+	        encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey); 
+	        System.out.println("Data Before Encryption :" + data);  
+	        byte[] dataToEncrypt = data.getBytes();  
+	        byte[] encryptedData = encryptCipher.doFinal(dataToEncrypt);  
+   	     	System.out.println("Encryted Data: " + encryptedData);  
+   			return Base64.encode(encryptedData);
+			  
+    }
+
+    @SuppressWarnings("unused")
+	private static String decryptValues(String data)  
+  	      throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
+  	
+  			SecretKeySpec secretKey = new SecretKeySpec(encryptionKey.getBytes("UTF-8"),"DES");
+	        decryptCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");  
+	        decryptCipher.init(Cipher.DECRYPT_MODE, secretKey); 
+	        byte[] ds = Base64.decode(data);
+	        byte[] textDecrypted = decryptCipher.doFinal(ds);  
+	        System.out.println("Decryted Data: " + new String(textDecrypted));
+ 			return new String(textDecrypted);
+    }
+  }
+
