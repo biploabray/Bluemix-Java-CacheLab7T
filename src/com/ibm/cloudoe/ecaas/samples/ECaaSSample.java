@@ -123,8 +123,8 @@ public class ECaaSSample extends HttpServlet {
     private static String encryptValues(String data)  
     	      throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
     	
-    		SecretKeySpec secretKey = new SecretKeySpec(encryptionKey.getBytes("UTF-8"),"DES");
-	        encryptCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");  
+    		SecretKeySpec secretKey = new SecretKeySpec(encryptionKey.getBytes("UTF-8"),"AES");
+	        encryptCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");  
 	        encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey); 
 	        System.out.println("Data Before Encryption :" + data);  
 	        byte[] dataToEncrypt = data.getBytes();  
