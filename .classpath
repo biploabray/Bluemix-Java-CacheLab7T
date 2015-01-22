@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="dep-jar/javax.servlet_3.0.0.jar"/>
 	<classpathentry kind="lib" path="dep-jar/wsogclient.jar"/>
+	<classpathentry kind="lib" path="dep-jar/psclnt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
