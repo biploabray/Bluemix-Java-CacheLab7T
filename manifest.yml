@@ -1,6 +1,5 @@
 applications:
 - services:
-
   - Data Cache-iy
   disk_quota: 1024M
   host: chowWebCache
