@@ -1,9 +1,9 @@
 applications:
 - services:
-  - Data Cache-iy
+  - Data Cache-82
   disk_quota: 1024M
-  host: chowWebCache
-  name: chowWebCache
+  host: Bluemix-Java-CacheLab7T
+  name: Bluemix-Java-CacheLab7T
   path: cacheSampleJavaNativeAPIs.war
   domain: mybluemix.net
   instances: 1
